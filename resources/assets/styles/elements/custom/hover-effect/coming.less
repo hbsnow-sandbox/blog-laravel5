@@ -1,0 +1,75 @@
+.hover-effect-coming {
+	@color: @link-color;
+
+	position: relative;
+	color: transparent;
+
+	&::after, &::before {
+		position: absolute;
+		top: 0;
+		left: 0;
+		content: attr(data-clone);
+		transform: scale(1);
+		transition: 1s all;
+	}
+
+	&::after {
+		clip-path: polygon(100% 100%, 100% 0, -35% 0, 0 100%);
+		color: @color;
+		animation: hoverEffectComingVolta .5s;
+	}
+
+	&::before {
+		clip-path: polygon(0 100%, -35% 0, 0 0, 0 100%);
+		color: @color;
+		transform: scale(1.2);
+	}
+
+	&:hover {
+		&::after {
+			animation: hoverEffectComingHideum .4s;
+			animation-fill-mode: forwards;
+		}
+
+		&::before {
+			transform: scale(1.4);
+			animation: hoverEffectComingShowum .4s;
+			animation-fill-mode: forwards;
+			animation-delay: .3s;
+		}
+	}
+
+	&:hover, &:focus {
+		color: transparent;
+	}
+}
+
+@keyframes hoverEffectComingVolta {
+	0% {
+		transform: scale(1.4);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes hoverEffectComingHideum {
+	0% {
+		clip-path: polygon(100% 100%, 100% 0, -35% 0, 0 100%);
+	}
+
+	100% {
+		clip-path: polygon(100% 100%, 100% 0, 100% 0, 135% 100%);
+	}
+}
+
+@keyframes hoverEffectComingShowum {
+	0% {
+		clip-path: polygon(0 100%, -35% 0, 0 0, 0 100%);
+	}
+
+	100% {
+		clip-path: polygon(135% 100%, 100% 0, 0 0, 0 100%);
+	}
+}

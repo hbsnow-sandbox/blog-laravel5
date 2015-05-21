@@ -1,0 +1,44 @@
+#content-body {
+	> .container {
+		> *:first-child {
+			margin-top: 0;
+		}
+	}
+
+	a {
+		text-decoration: underline;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		a {
+			position: relative;
+			display: inline-block;
+			color: @base-color0;
+			text-decoration: none;
+		}
+	}
+
+	h2 {
+		a {
+			&::after {
+				content: '#';
+				color: @theme-color0;
+				margin-left: .75rem;
+			}
+
+			@media (min-width: @screen-lg-min) {
+				&::after {
+					display: none;
+				}
+
+				&::before {
+					position: absolute;
+					left: -2rem;
+					content: '#';
+					color: @theme-color0;
+					margin-left: 0;
+				}
+			}
+		}
+	}
+}

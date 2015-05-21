@@ -1,0 +1,91 @@
+pre[prism] {
+	// color
+	@base00:  #fff;
+	@base0:   #333;
+	@base1:   #969896;
+	@brown:  #693a17;
+	@orange:  #df5000;
+	@red:     #b52a1d;
+	@magenta: #a71d5d;
+	@violet:  #795da3;
+	@blue:    #183691;
+	@cyan:    #0086b3;
+	@green:   #63a35c;
+	@light-green: #55a532;
+	@teal: #008080;
+
+	background-color: @base00;
+
+	code {
+		color: @base0;
+	}
+
+	.namespace {
+		//
+	}
+
+	.token {
+		&.comment,
+		&.prolog,
+		&.doctype,
+		&.cdata {
+			color: @base1;
+		}
+
+		&.keyword {
+			color: @magenta;
+		}
+
+		&.function {
+			color: @cyan;
+		}
+
+		&.punctuation {
+			color: @base0;
+		}
+
+		&.operator {
+			color: @magenta;
+		}
+
+		&.placeholder,
+		&.variable {
+			color: @base0;
+		}
+
+		&.attr-name,
+		&.string {
+			color: @orange;
+		}
+
+		&.null,
+		&.boolean,
+		&.number, {
+			color: @cyan;
+		}
+
+		&.package {
+			color: @violet;
+		}
+
+		&.delimiter {
+			color: @base0;
+		}
+
+		&.debug {
+			color: red;
+		}
+
+		&.tag {
+			color: @green;
+		}
+
+		&.attr-name {
+			color: @violet;
+		}
+
+		&.attr-value {
+			color: @orange;
+		}
+	}
+}

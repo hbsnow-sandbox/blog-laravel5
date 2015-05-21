@@ -1,0 +1,28 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    RewriteEngine On
+
+    # gzip
+    RewriteCond %{HTTP:Accept-Encoding} gzip
+    RewriteCond %{REQUEST_FILENAME} !\.gz$
+    RewriteCond %{REQUEST_FILENAME}\.gz -s
+    RewriteCond %{REQUEST_FILENAME} \.js$
+    RewriteCond %{REQUEST_FILENAME} \.css$
+    RewriteRule .+ %{REQUEST_URI}.gz
+
+
+    # Redirect Trailing Slashes...
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+
+    # Herokuから4uingにリダイレクト
+    RewriteCond %{HTTP_HOST} ^blog4uing.herokuapp.com$
+    RewriteRule (.*) http://4uing.net/$1 [R=301,L]
+</IfModule>
