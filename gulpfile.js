@@ -6,11 +6,11 @@ var runSequence = require('run-sequence');
 var $ = require('gulp-load-plugins')();
 
 var path = {
-	'assets': './resources/assets/',
-	'dist': './public/assets/',
-	'vendor': './resources/vendor/',
-	'less': 'styles/main.less',
-	'js': 'scripts/main.js'
+  'assets': 'resources/assets/',
+  'dist': 'public/assets/',
+  'vendor': 'resources/vendor/',
+  'less': 'styles/main.less',
+  'js': 'scripts/main.js'
 }
 
 var watch = false
@@ -22,24 +22,23 @@ var watch = false
  */
 
 gulp.task('build:less', function() {
-	if(watch) {
-		return gulp.src(path.assets + path.less)
-			.pipe($.plumber())
-			.pipe($.sourcemaps.init())
-			.pipe($.less())
-			.pipe($.sourcemaps.write())
-			.pipe($.autoprefixer())
-			.pipe(gulp.dest(path.dist + 'styles/'));
-	} else {
-		return gulp.src(path.assets + path.less)
-			.pipe($.less())
-			.pipe($.autoprefixer())
-			.pipe($.minifyCss())
-			.pipe(gulp.dest(path.dist + 'styles/'))
-			.pipe($.gzip())
-			.pipe(gulp.dest(path.dist + 'styles/'));
-	}
-
+  if(watch) {
+    return gulp.src(path.assets + path.less)
+      .pipe($.plumber())
+      .pipe($.sourcemaps.init())
+      .pipe($.less())
+      .pipe($.sourcemaps.write())
+      .pipe($.autoprefixer())
+      .pipe(gulp.dest(path.dist + 'styles/'));
+  } else {
+    return gulp.src(path.assets + path.less)
+      .pipe($.less())
+      .pipe($.autoprefixer())
+      .pipe($.minifyCss())
+      .pipe(gulp.dest(path.dist + 'styles/'))
+      .pipe($.gzip())
+      .pipe(gulp.dest(path.dist + 'styles/'));
+  }
 });
 
 
@@ -49,58 +48,46 @@ gulp.task('build:less', function() {
  */
 
 gulp.task('jshint', function () {
-	return gulp.src(path.assets + 'scripts/**/*.js')
-		.pipe($.jshint())
-		.pipe($.jshint.reporter('jshint-stylish'));
+  return gulp.src(path.assets + 'scripts/**/*.js')
+    .pipe($.jshint())
+    .pipe($.jshint.reporter('jshint-stylish'));
 });
 
 
 
 gulp.task('build:js', function() {
-	var src = path.assets + path.js;
+  var src = path.assets + path.js;
+  var config = {
+    entry: src,
+    output: {
+      filename: '[name].js'
+    },
+    module: {
+      loaders: [
+        {
+          test: /\.html$/,
+          loader: 'html'
+        },
+      ]
+    }
+  };
 
-	if(watch) {
-		return gulp.src(src)
-			.pipe($.webpack({
-				watch: true,
-				debug: false,
-				devtool: 'inline-source-map',
-				output: {
-					filename: '[name].js'
-				},
-				module: {
-					loaders: [
-						{
-							test: /\.html$/,
-							loader: 'html'
-						},
-					]
-				}
-			}))
-			.pipe(gulp.dest(path.dist + 'scripts/'));
-	} else {
-		return gulp.src(src)
-			.pipe($.webpack({
-				entry: src,
-				output: {
-					filename: '[name].js'
-				},
-				module: {
-					loaders: [
-						{
-							test: /\.html$/,
-							loader: 'html'
-						},
-					]
-				}
-			}))
-			.pipe($.uglify({
-				mangle: false
-			}))
-			.pipe(gulp.dest(path.dist + 'scripts/'))
-			.pipe($.gzip())
-			.pipe(gulp.dest(path.dist + 'scripts/'));
-	}
+  if(watch) {
+    config.watch = true;
+    config.devtool = '#inline-source-map';
+    return gulp.src(src)
+      .pipe($.webpack(config))
+      .pipe(gulp.dest(path.dist + 'scripts/'));
+  } else {
+    return gulp.src(src)
+      .pipe($.webpack(config))
+      .pipe($.uglify({
+        mangle: false
+      }))
+      .pipe(gulp.dest(path.dist + 'scripts/'))
+      .pipe($.gzip())
+      .pipe(gulp.dest(path.dist + 'scripts/'));
+  }
 });
 
 
@@ -110,13 +97,13 @@ gulp.task('build:js', function() {
  */
 
 gulp.task('watch', ['clean'], function(cb) {
-	watch = true;
+  watch = true;
 
-	runSequence('build', function() {
-		gulp.watch(path.assets + 'scripts/**/*.js', ['jshint', 'build:js']);
-		gulp.watch(path.assets + 'styles/**/*.less', ['build:less']);
-		cb();
-	});
+  runSequence('build', function() {
+    gulp.watch(path.assets + 'scripts/**/*.js', ['jshint', 'build:js']);
+    gulp.watch(path.assets + 'styles/**/*.less', ['build:less']);
+    cb();
+  });
 });
 
 
@@ -126,11 +113,11 @@ gulp.task('watch', ['clean'], function(cb) {
  */
 
 gulp.task('clean', function(cb) {
-	del(['dist/**/*', '!dist/images/**/*'], cb);
+  del(['dist/**/*', '!dist/images/**/*'], cb);
 });
 
 gulp.task('build', ['clean'], function (cb) {
-	runSequence(['build:less', 'build:js'], cb);
+  runSequence(['build:less', 'build:js'], cb);
 });
 
 
